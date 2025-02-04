@@ -10,14 +10,19 @@ const cookieParser =require('cookie-parser');
 const multer = require('multer');
 const uploadMiddleware = multer({dest:'uploads/'});
 const fs =require('fs');
-
+require('dotenv').config();  // Load environment variables
 
 const salt=bcrypt.genSaltSync(10);
-const secret ='sdvsvssfsdfsfs';
+const secret =process.env.JWT_SECRET;
 
 app.use(cors({credentials:true,origin:'http://localhost:3000'}));
 app.use(express.json());
-mongoose.connect('mongodb+srv://akshay123:akshay@cluster0.trrpknk.mongodb.net/blog?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => console.log("MongoDB Connected"))
+.catch(err => console.error("MongoDB connection error:", err));
+
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname + '/uploads'))
 
