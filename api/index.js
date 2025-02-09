@@ -14,8 +14,13 @@ require('dotenv').config();  // Load environment variables
 const path =require("path")
 const salt=bcrypt.genSaltSync(10);
 const secret =process.env.JWT_SECRET;
-
-app.use(cors({credentials:true,origin:'http://localhost:3000'}));
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://13.48.42.96:3000'], // Add your frontend URL
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+//app.use(cors({credentials:true,origin:'http://localhost:3000'}));
 app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -25,8 +30,14 @@ mongoose.connect(process.env.MONGODB_URI, {
 const buildpath =path.join(__dirname,"../client/build")  //buil path codes fro aws
 app.use(express.static(buildpath))//to run the build file
 app.use(cors({
-  "origin":"*"
+  origin: '*', // Allow all origins (for testing, change it to specific domain in production)
+  credentials: true, 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }))
+// app.use(cors({
+//   "origin":"*"
+// }))
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname + '/uploads'))
 
