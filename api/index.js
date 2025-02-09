@@ -20,7 +20,7 @@ app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => console.log("MongoDB Connected"))
+}).then(() => console.log("MongoDB Connected",))
 .catch(err => console.error("MongoDB connection error:", err));
 const buildpath =path.join(__dirname,"../client/build")  //buil path codes fro aws
 app.use(express.static(buildpath))//to run the build file
@@ -39,7 +39,7 @@ app.post('/register', async (req, res) => {
     res.json(userDoc);
     }catch(e){
         res.status(400).json(e);
-        console.log(e)
+        // console.log(e)
 
     }
 });
