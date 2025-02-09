@@ -11,7 +11,7 @@ const multer = require('multer');
 const uploadMiddleware = multer({dest:'uploads/'});
 const fs =require('fs');
 require('dotenv').config();  // Load environment variables
-
+const path =require("path")
 const salt=bcrypt.genSaltSync(10);
 const secret =process.env.JWT_SECRET;
 
@@ -22,7 +22,11 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
 }).then(() => console.log("MongoDB Connected"))
 .catch(err => console.error("MongoDB connection error:", err));
-
+const buildpath =path.join(__dirname,"../client/build")  //buil path codes fro aws
+app.use(express.static(buildpath))//to run the build file
+app.use(cors({
+  "origin":"*"
+}))
 app.use(cookieParser());
 app.use('/uploads',express.static(__dirname + '/uploads'))
 
